@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Toko Zek">
+    <title>Admin Dashboard - Toko Zek</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="../css/admin.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+</head>
+<body class="admin-body">
+    
+    <!-- ===== SIDEBAR ===== -->
+    <nav class="admin-sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <i class="fas fa-store-alt"></i>
+                <h2>Toko Zek</h2>
+            </div>
+            <!-- Admin Info will be inserted here by JavaScript -->
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="active" data-tab="dashboard">
+                <a href="#dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li data-tab="products">
+                <a href="#products">
+                    <i class="fas fa-box"></i>
+                    <span>Produk</span>
+                </a>
+            </li>
+            <li data-tab="orders">
+                <a href="#orders">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Pesanan</span>
+                </a>
+            </li>
+            <li data-tab="settings">
+                <a href="#settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Pengaturan</span>
+                </a>
+            </li>
+            <li class="logout">
+                <a href="#logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="admin-main">
+        
+        <!-- ===== DASHBOARD TAB ===== -->
+        <section id="dashboard" class="admin-tab active">
+            <div class="page-header">
+                <h2 class="page-title">Dashboard</h2>
+                <p class="date-time" id="currentDateTime"></p>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <p class="stat-title">Total Pesanan</p>
+                    <h3 class="stat-value" id="totalOrders">0</h3>
+                    <p class="stat-change" id="orderChange">Loading...</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <p class="stat-title">Total Produk</p>
+                    <h3 class="stat-value" id="totalProducts">0</h3>
+                    <p class="stat-change">Aktif di katalog</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <p class="stat-title">Total Pendapatan</p>
+                    <h3 class="stat-value" id="totalRevenue">Rp 0</h3>
+                    <p class="stat-change" id="revenueChange">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="dashboard-charts">
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-line"></i> Grafik Penjualan</h3>
+                    <canvas id="salesChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3><i class="fas fa-chart-pie"></i> Kategori Terlaris</h3>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="recent-orders">
+                <div class="section-header">
+                    <h3>Pesanan Terbaru</h3>
+                    <a href="#orders" class="view-all" onclick="adminDashboard.switchTab('orders')">
+                        Lihat Semua <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="table-container">
+                    <table id="recentOrdersTable">
+                        <thead>
+                            <tr>
+                                <th>ID Pesanan</th>
+                                <th>Pelanggan</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="loading">
+                                    <i class="fas fa-spinner fa-spin"></i> Memuat data...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== PRODUCTS TAB ===== -->
+        <section id="products" class="admin-tab">
+            <div class="page-header">
+                <h2 class="page-title">Kelola Produk</h2>
+                <button class="btn btn-primary" onclick="adminDashboard.showAddProductModal()">
+                    <i class="fas fa-plus"></i> Tambah Produk
+                </button>
+            </div>
+
+            <!-- Product Filters -->
+            <div class="product-filters">
+                <select id="categoryFilter" aria-label="Filter kategori">
+                    <option value="all">Semua Kategori</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="sports">Olahraga</option>
+                    <option value="electronics">Elektronik</option>
+                </select>
+                <input 
+                    type="text" 
+                    id="searchProduct" 
+                    placeholder="Cari produk..."
+                    aria-label="Cari produk"
+                >
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Memuat produk...
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ORDERS TAB ===== -->
+        <section id="orders" class="admin-tab">
+            <div class="page-header">
+                <h2 class="page-title">Daftar Pesanan</h2>
+                <div class="order-filters">
+                    <select id="orderStatus" aria-label="Filter status">
+                        <option value="all">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <input 
+                        type="date" 
+                        id="orderDate"
+                        aria-label="Filter tanggal"
+                    >
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="table-container">
+                <table id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>ID Pesanan</th>
+                            <th>Pelanggan</th>
+                            <th>Produk</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="loading">
+                                <i class="fas fa-spinner fa-spin"></i> Memuat pesanan...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== SETTINGS TAB ===== -->
+        <section id="settings" class="admin-tab">
+            <div class="page-header">
+                <h2 class="page-title">Pengaturan Website</h2>
+            </div>
+
+            <div class="settings-container">
+                <form id="settingsForm" class="settings-form">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--text-color);">
+                        <i class="fas fa-cog"></i> Pengaturan Umum
+                    </h3>
+
+                    <!-- Store Name -->
+                    <div class="form-group">
+                        <label for="storeName">
+                            <i class="fas fa-store"></i> Nama Toko
+                        </label>
+                        <input 
+                            type="text" 
+                            id="storeName" 
+                            class="form-control"
+                            placeholder="Masukkan nama toko"
+                            required
+                        >
+                    </div>
+
+                    <!-- Store Description -->
+                    <div class="form-group">
+                        <label for="storeDescription">
+                            <i class="fas fa-align-left"></i> Deskripsi Toko
+                        </label>
+                        <textarea 
+                            id="storeDescription" 
+                            class="form-control" 
+                            rows="4"
+                            placeholder="Masukkan deskripsi toko"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <!-- Store Logo -->
+                    <div class="form-group">
+                        <label for="storeLogo">
+                            <i class="fas fa-image"></i> Logo Toko
+                        </label>
+                        <input 
+                            type="file" 
+                            id="storeLogo" 
+                            class="form-control" 
+                            accept="image/*"
+                        >
+                        <div id="currentLogo" class="current-logo">
+                            <!-- Current logo will be shown here -->
+                        </div>
+                    </div>
+
+                    <!-- Theme Color -->
+                    <div class="form-group">
+                        <label for="themeColor">
+                            <i class="fas fa-palette"></i> Warna Tema
+                        </label>
+                        <input 
+                            type="color" 
+                            id="themeColor" 
+                            class="form-control"
+                            value="#3498db"
+                        >
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan Perubahan
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== MODALS ===== -->
+    
+    <!-- Add/Edit Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-box"></i> Tambah Produk</h3>
+                <button class="close-btn" onclick="adminDashboard.closeModal()" aria-label="Tutup modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="productForm">
+                <!-- Product Name -->
+                <div class="form-group">
+                    <label for="productName">Nama Produk</label>
+                    <input 
+                        type="text" 
+                        id="productName" 
+                        class="form-control"
+                        placeholder="Masukkan nama produk"
+                        required
+                    >
+                </div>
+
+                <!-- Category -->
+                <div class="form-group">
+                    <label for="productCategory">Kategori</label>
+                    <select id="productCategory" class="form-control" required>
+                        <option value="">Pilih kategori</option>
+                        <option value="fashion">Fashion</option>
+                        <option value="sports">Olahraga</option>
+                        <option value="electronics">Elektronik</option>
+                    </select>
+                </div>
+
+                <!-- Price -->
+                <div class="form-group">
+                    <label for="productPrice">Harga (Rp)</label>
+                    <input 
+                        type="number" 
+                        id="productPrice" 
+                        class="form-control"
+                        placeholder="Masukkan harga"
+                        min="0"
+                        step="1000"
+                        required
+                    >
+                </div>
+
+                <!-- Image -->
+                <div class="form-group">
+                    <label for="productImage">Gambar Produk</label>
+                    <input 
+                        type="file" 
+                        id="productImage" 
+                        class="form-control" 
+                        accept="image/*"
+                    >
+                    <div id="imagePreview" class="image-preview">
+                        <!-- Image preview will be shown here -->
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="productDescription">Deskripsi</label>
+                    <textarea 
+                        id="productDescription" 
+                        class="form-control" 
+                        rows="4"
+                        placeholder="Masukkan deskripsi produk"
+                    ></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="modal-buttons">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="adminDashboard.closeModal()">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <!-- Content will be dynamically generated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Script -->
+    <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Login - Toko Zek">
+    <title>Admin Login - Toko Zek</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="login-page">
+    
+    <div class="login-container">
+        <div class="login-box">
+            <!-- Login Header -->
+            <div class="login-header">
+                <i class="fas fa-store-alt"></i>
+                <h2>Toko Zek</h2>
+                <p>Admin Dashboard</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form">
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label for="username">
+                        <i class="fas fa-user"></i>
+                        Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username"
+                        placeholder="Masukkan username"
+                        required 
+                        autocomplete="username"
+                        autofocus
+                    >
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            placeholder="Masukkan password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="form-group remember-me">
+                    <label>
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <span>Ingat saya</span>
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Masuk
+                </button>
+            </form>
+
+            <!-- Back to Store Link -->
+            <div class="back-to-store">
+                <a href="../index.html">
+                    <i class="fas fa-arrow-left"></i>
+                    Kembali ke Toko
+                </a>
+            </div>
+        </div>
+
+        <!-- Login Info -->
+        <div style="text-align: center; margin-top: 1.5rem; color: rgba(255,255,255,0.9); font-size: 0.9rem;">
+            <p><strong>Demo Login:</strong></p>
+            <p>Username: <code style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.5rem; border-radius: 4px;">admin</code></p>
+            <p>Password: <code style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.5rem; border-radius: 4px;">admin123</code></p>
+        </div>
+    </div>
+
+    <!-- Admin Login Script -->
+    <script src="../js/admin-login.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang - Toko Zek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/cart.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="index.html">Toko Zek</a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html#products">Produk</a>
+            <a href="index.html#contact">Kontak</a>
+        </div>
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </a>
+            <a href="admin/login.html" class="admin-icon">
+                <i class="fas fa-user-shield"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Cart Section -->
+    <div class="cart-container">
+        <h2>Keranjang Belanja</h2>
+        
+        <div class="cart-content">
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be loaded here -->
+            </div>
+
+            <div class="cart-summary">
+                <h3>Ringkasan Belanja</h3>
+                <div class="summary-item">
+                    <span>Total Barang:</span>
+                    <span id="totalItems">0 items</span>
+                </div>
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">Rp 0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Pengiriman:</span>
+                    <span id="shipping">Rp 0</span>
+                </div>
+                <div class="summary-item total">
+                    <span>Total:</span>
+                    <span id="total">Rp 0</span>
+                </div>
+                <button id="checkoutBtn" class="checkout-btn" onclick="proceedToCheckout()">
+                    Lanjut ke Pembayaran
+                </button>
+                <button class="continue-shopping" onclick="window.location.href='index.html#products'">
+                    Lanjut Belanja
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty Cart Message -->
+    <div id="emptyCart" class="empty-cart" style="display: none;">
+        <i class="fas fa-shopping-cart"></i>
+        <h3>Keranjang Belanja Kosong</h3>
+        <p>Anda belum menambahkan produk ke keranjang</p>
+        <button onclick="window.location.href='index.html#products'">
+            Mulai Belanja
+        </button>
+    </div>
+
+    <script src="js/cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko M. Zakky - Belanja Online</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-store-alt brand-icon"></i>
+            <a href="index.html">Toko Zek</a>
+        </div>
+        <div class="nav-links">
+            <a href="#products" class="nav-link">Produk</a>
+            <a href="#contact" class="nav-link">Kontak</a>
+        </div>
+        <div class="nav-actions">
+            <a href="cart.html" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </a>
+            <a href="admin/login.html" class="admin-icon">
+                <i class="fas fa-user-shield"></i>
+            </a>
+            <button class="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="#products">Produk</a>
+        <a href="#contact">Kontak</a>
+        <a href="#contact" class="send-message">
+            <i class="fas fa-envelope"></i>
+            Kirim Pesan
+        </a>
+    </div>
+
+    <!-- Hero Section with Gradient Background -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Selamat Datang di Toko Zek</h1>
+            <p>Temukan koleksi terbaik fashion, olahraga, dan elektronik</p>
+            <a href="#products" class="cta-button">Belanja Sekarang</a>
+        </div>
+    </header>
+
+    <!-- Categories Section -->
+    <section class="categories" id="products">
+        <h2>Kategori Produk</h2>
+        <div class="category-grid">
+            <div class="category-card" data-category="fashion">
+                <i class="fas fa-tshirt"></i>
+                <h3>Fashion</h3>
+                <p>Koleksi pakaian dan aksesoris terbaru</p>
+            </div>
+            <div class="category-card" data-category="sports">
+                <i class="fas fa-basketball-ball"></i>
+                <h3>Olahraga</h3>
+                <p>Peralatan olahraga berkualitas</p>
+            </div>
+            <div class="category-card" data-category="electronics">
+                <i class="fas fa-laptop"></i>
+                <h3>Elektronik</h3>
+                <p>Gadget dan perangkat elektronik modern</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products">
+        <div class="product-filters">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="fashion">Fashion</button>
+            <button class="filter-btn" data-filter="sports">Olahraga</button>
+            <button class="filter-btn" data-filter="electronics">Elektronik</button>
+        </div>
+        <div class="product-grid" id="productGrid">
+            <!-- Products will be loaded dynamically via JavaScript -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2>Hubungi Kami</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>zeky@gmail.com</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <p>+62 822-8869-1614</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Pematangsiantar</p>
+                </div>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Nama" required>
+                <input type="email" placeholder="Email" required>
+                <textarea placeholder="Pesan" required></textarea>
+                <button type="submit" class="submit-btn">Kirim Pesan</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Toko Zek</h3>
+                <p>Toko online tugas informatika 😋</p>
+            </div>
+            <div class="footer-section">
+                <h3></h3>
+                <ul>
+                    <li><a href="#products"></a></li>
+                    <li><a href="#contact"></a></li>
+                    <li><a href="cart.html"></a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Ikuti Kami</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/zekycen_?igsh=MXZvOHk4enVsMDB0"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/zekycen_?igsh=MXZvOHk4enVsMDB0"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/zekycen_?igsh=MXZvOHk4enVsMDB0"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Toko Zek. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

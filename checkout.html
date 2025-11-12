@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Toko Zek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --text-color: #2c3e50;
+            --light-text: #7f8c8d;
+            --border-color: #ecf0f1;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-color);
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .nav-brand a {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Checkout Container */
+        .checkout-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 2rem;
+        }
+
+        .checkout-container > h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Progress Bar - IMPROVED SPACING */
+        .checkout-progress {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 4rem;
+            max-width: 700px;
+            position: relative;
+            gap: 4rem;
+        }
+
+        .checkout-progress::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 20%;
+            right: 20%;
+            height: 3px;
+            background: linear-gradient(to right, #e0e0e0 50%, #e0e0e0 50%);
+            z-index: 0;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            z-index: 1;
+            min-width: 100px;
+        }
+
+        .progress-step i {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #999;
+            border: 3px solid #e0e0e0;
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .progress-step.active i {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+            transform: scale(1.1);
+        }
+
+        .progress-step span {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #999;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .progress-step.active span {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* Checkout Form */
+        .checkout-form {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .checkout-step {
+            display: none;
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .checkout-step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .checkout-step h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Payment Section Titles */
+        .payment-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 1.5rem 0 1rem 0;
+            padding-left: 0.5rem;
+            border-left: 4px solid var(--primary-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .payment-section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        /* Shipping Options */
+        .shipping-options {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .shipping-option {
+            position: relative;
+            padding: 1.5rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .shipping-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .shipping-option:hover {
+            border-color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .shipping-option.active {
+            border-color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .option-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-name {
+            font-weight: 600;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .option-price {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Payment Methods - SEPARATED */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .payment-method {
+            position: relative;
+            padding: 1.5rem;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: white;
+        }
+
+        .payment-method input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .payment-method:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .method-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .method-info i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .method-info span {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .order-summary h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .summary-total {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f8f9fa;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .summary-item.total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            padding-top: 0.8rem;
+            border-top: 2px solid #f8f9fa;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .back-btn,
+        .next-btn,
+        .submit-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .back-btn {
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            border: 2px solid #e0e0e0;
+        }
+
+        .back-btn:hover {
+            background-color: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .next-btn,
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .next-btn:hover,
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Modern Alert Toast */
+        .alert-toast {
+            position: fixed;
+            top: 100px;
+            right: -400px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 2000;
+            min-width: 350px;
+            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .alert-toast.show {
+            right: 20px;
+        }
+
+        .alert-toast.error {
+            border-left-color: #e74c3c;
+        }
+
+        .alert-toast.warning {
+            border-left-color: #f39c12;
+        }
+
+        .alert-content {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .alert-toast.error .alert-icon {
+            color: #e74c3c;
+        }
+
+        .alert-toast.warning .alert-icon {
+            color: #f39c12;
+        }
+
+        .alert-text {
+            flex: 1;
+        }
+
+        .alert-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .alert-text p {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s ease;
+        }
+
+        .alert-close:hover {
+            color: var(--text-color);
+        }
+
+        /* Success Popup */
+        .success-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+        }
+
+        .success-content {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 700px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .success-content > i {
+            font-size: 4rem;
+            color: #2ecc71;
+            margin-bottom: 1rem;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .success-content h2 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        /* Receipt */
+        .receipt {
+            text-align: left;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px dashed #ddd;
+        }
+
+        .receipt h3 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .receipt-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .receipt-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .receipt-section h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .receipt-row.total-row {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #ddd;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .checkout-form {
+                grid-template-columns: 1fr;
+            }
+            .order-summary {
+                position: static;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .checkout-progress {
+                gap: 2rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+            .alert-toast {
+                min-width: auto;
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .checkout-container {
+                padding: 0 1rem;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            .progress-step {
+                min-width: 80px;
+            }
+            .progress-step i {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            .checkout-progress::before {
+                top: 25px;
+            }
+            .progress-step span {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            .success-popup, .success-popup * { visibility: visible; }
+            .success-popup {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+            }
+            .success-popup button { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="index.html">Toko Zek</a>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        <h2>Checkout</h2>
+        
+        <form id="checkoutForm" class="checkout-form">
+            <!-- Progress Bar -->
+            <div class="checkout-progress">
+                <div class="progress-step active" data-step="1">
+                    <i class="fas fa-user"></i>
+                    <span>Data Diri</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <i class="fas fa-truck"></i>
+                    <span>Pengiriman</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Pembayaran</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Data Diri -->
+            <div class="checkout-step active" id="step1">
+                <h3>Data Penerima</h3>
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="fullName" required placeholder="Masukkan nama lengkap">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required placeholder="contoh@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Nomor Telepon</label>
+                    <input type="tel" id="phone" required placeholder="08xxxxxxxxxx">
+                </div>
+                <button type="button" class="next-btn" onclick="nextStep(1)">Lanjut ke Pengiriman</button>
+            </div>
+
+            <!-- Step 2: Pengiriman -->
+            <div class="checkout-step" id="step2">
+                <h3>Alamat Pengiriman</h3>
+                <div class="form-group">
+                    <label>Alamat Lengkap</label>
+                    <textarea id="address" required placeholder="Jalan, nomor rumah, RT/RW, kelurahan"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Provinsi</label>
+                        <input type="text" id="province" required placeholder="Contoh: DKI Jakarta">
+                    </div>
+                    <div class="form-group">
+                        <label>Kota/Kabupaten</label>
+                        <input type="text" id="city" required placeholder="Contoh: Jakarta Selatan">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Kode Pos</label>
+                    <input type="text" id="postalCode" required placeholder="12345" maxlength="5">
+                </div>
+                <div class="form-group">
+                    <label>Metode Pengiriman</label>
+                    <div class="shipping-options">
+                        <label class="shipping-option">
+                            <input type="radio" name="shipping" value="regular" checked>
+                            <span class="option-info">
+                                <span class="option-name">Regular (2-3 hari)</span>
+                                <span class="option-price">Rp 15.000</span>
+                            </span>
+                        </label>
+                        <label class="shipping-option">
+                            <input type="radio" name="shipping" value="express">
+                            <span class="option-info">
+                                <span class="option-name">Express (1 hari)</span>
+                                <span class="option-price">Rp 30.000</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="back-btn" onclick="prevStep(2)">Kembali</button>
+                    <button type="button" class="next-btn" onclick="nextStep(2)">Lanjut ke Pembayaran</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Pembayaran -->
+            <div class="checkout-step" id="step3">
+                <h3>Metode Pembayaran</h3>
+                
+                <!-- Bank Transfer Section -->
+                <div class="payment-section-title">
+                    <i class="fas fa-university"></i> Transfer Bank
+                </div>
+                <div class="payment-methods">
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="bca" checked>
+                        <span class="method-info">
+                            <i class="fas fa-university"></i>
+                            <span>BCA</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="mandiri">
+                        <span class="method-info">
+                            <i class="fas fa-university"></i>
+                            <span>Mandiri</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="bni">
+                        <span class="method-info">
+                            <i class="fas fa-university"></i>
+                            <span>BNI</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="bri">
+                        <span class="method-info">
+                            <i class="fas fa-university"></i>
+                            <span>BRI</span>
+                        </span>
+                    </label>
+                </div>
+
+                <!-- E-Wallet Section -->
+                <div class="payment-section-title">
+                    <i class="fas fa-wallet"></i> E-Wallet & Pembayaran Digital
+                </div>
+                <div class="payment-methods">
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="gopay">
+                        <span class="method-info">
+                            <i class="fas fa-wallet"></i>
+                            <span>GoPay</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="dana">
+                        <span class="method-info">
+                            <i class="fas fa-wallet"></i>
+                            <span>DANA</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="ovo">
+                        <span class="method-info">
+                            <i class="fas fa-wallet"></i>
+                            <span>OVO</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="shopeepay">
+                        <span class="method-info">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>ShopeePay</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="qris">
+                        <span class="method-info">
+                            <i class="fas fa-qrcode"></i>
+                            <span>QRIS</span>
+                        </span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment" value="cod">
+                        <span class="method-info">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>COD</span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="back-btn" onclick="prevStep(3)">Kembali</button>
+                    <button type="submit" class="submit-btn">Selesaikan Pemesanan</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h3>Ringkasan Pesanan</h3>
+            <div id="orderItems">
+                <!-- Order items will be loaded here -->
+            </div>
+            <div class="summary-total">
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">Rp 0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Pengiriman:</span>
+                    <span id="shipping">Rp 15.000</span>
+                </div>
+                <div class="summary-item total">
+                    <span>Total:</span>
+                    <span id="total">Rp 0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/checkout.js"></script>
+</body>
+</html>
